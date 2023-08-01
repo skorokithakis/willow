@@ -32,4 +32,7 @@ void init_logging(void)
     esp_log_level_set("WILLOW/TIMER", WILLOW_LOG_LEVEL);
     esp_log_level_set("WILLOW/UI", WILLOW_LOG_LEVEL);
     esp_log_level_set("WILLOW/WAS", WILLOW_LOG_LEVEL);
+
+    esp_log_level_set("AUDIO_ELEMENT", ESP_LOG_DEBUG);
+    esp_log_level_set("AUDIO_PIPELINE", ESP_LOG_DEBUG);
 }
