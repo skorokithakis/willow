@@ -1,3 +1,4 @@
+#include "driver/temp_sensor.h"
 #include "esp_err.h"
 #include "esp_log.h"
 #include "esp_netif.h"
@@ -225,6 +226,12 @@ err_nvs:
     xTaskCreate(&task_debug_runtime_stats, "dbg_runtime_stats", 4 * 1024, NULL, 0, NULL);
 #endif
 
+    float temp_esp;
+    temp_sensor_config_t cfg_sensor_temp = TSENS_CONFIG_DEFAULT();
+    ESP_ERROR_CHECK_WITHOUT_ABORT(temp_sensor_set_config(cfg_sensor_temp));
+    ESP_ERROR_CHECK_WITHOUT_ABORT(temp_sensor_start());
+
+
     while (true) {
 #ifdef CONFIG_WILLOW_DEBUG_MEM
         printf("MALLOC_CAP_INTERNAL:\n");
@@ -248,5 +255,7 @@ err_nvs:
 #ifdef CONFIG_HEAP_TASK_TRACKING
         esp_dump_per_task_heap_info();
 #endif
+        ESP_ERROR_CHECK_WITHOUT_ABORT(temp_sensor_read_celsius(&temp_esp));
+        ESP_LOGI(TAG, "ESP temperature: %.02fC", temp_esp);
     }
 }
